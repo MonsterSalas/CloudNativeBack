@@ -41,12 +41,9 @@ public class SignosVitalesController {
     public ResponseEntity<SignosVitales> updateSignosVitales(@RequestBody SignosVitales signosVitales) {
         return ResponseEntity.ok(signosVitalesService.updateSignosVitales(signosVitales));
     }
-
     @GetMapping("/paciente/{pacienteId}")
     public ResponseEntity<List<SignosVitales>> getSignosVitalesByPacienteId(@PathVariable Long pacienteId) {
         return ResponseEntity.ok(signosVitalesService.getSignosVitalesByPacienteId(pacienteId));
     }
-
-
-
+    
 }

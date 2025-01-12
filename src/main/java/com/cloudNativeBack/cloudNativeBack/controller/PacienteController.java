@@ -1,14 +1,16 @@
 package com.cloudNativeBack.cloudNativeBack.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.cloudNativeBack.cloudNativeBack.model.Paciente;
+import com.cloudNativeBack.cloudNativeBack.model.dto.PacienteUpdateDTO;
 import com.cloudNativeBack.cloudNativeBack.service.PacienteService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 
 @RequestMapping("/back/pacientes")
@@ -38,9 +40,11 @@ public class PacienteController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping
-    public ResponseEntity<Paciente> updatePaciente(@RequestBody Paciente paciente) {
-        return ResponseEntity.ok(pacienteService.updatePaciente(paciente));
+    @PutMapping("/{id}")
+    public ResponseEntity<Paciente> actualizarPaciente(
+            @PathVariable Long id,
+            @RequestBody PacienteUpdateDTO pacienteDTO) {
+        pacienteDTO.setId(id);
+        return ResponseEntity.ok(pacienteService.updatePaciente(pacienteDTO));
     }
-
 }

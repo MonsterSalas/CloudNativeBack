@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.cloudNativeBack.cloudNativeBack.exception.ResourceNotFoundException;
 import com.cloudNativeBack.cloudNativeBack.model.Paciente;
+import com.cloudNativeBack.cloudNativeBack.model.dto.PacienteUpdateDTO;
 import com.cloudNativeBack.cloudNativeBack.repository.PacienteRepository;
+
 @Service
 public class PacienteService {
 
@@ -32,50 +34,38 @@ public class PacienteService {
         pacienteRepository.deleteById(id);
     }
 
-public Paciente updatePaciente(Paciente pacienteNuevo) {
-    return pacienteRepository.findById(pacienteNuevo.getId())
-        .map(pacienteExistente -> {
-            // Mantener valores existentes si los nuevos son null
-            if (pacienteNuevo.getNombre() == null) {
-                pacienteNuevo.setNombre(pacienteExistente.getNombre());
-            }
-            if (pacienteNuevo.getApellido() == null) {
-                pacienteNuevo.setApellido(pacienteExistente.getApellido());
-            }
-            if (pacienteNuevo.getRut() == null) {
-                pacienteNuevo.setRut(pacienteExistente.getRut());
-            }
-            if (pacienteNuevo.getEdad() == null) {
-                pacienteNuevo.setEdad(pacienteExistente.getEdad());
-            }
-            if (pacienteNuevo.getDireccion() == null) {
-                pacienteNuevo.setDireccion(pacienteExistente.getDireccion());
-            }
-            if (pacienteNuevo.getFechaNacimiento() == null) {
-                pacienteNuevo.setFechaNacimiento(pacienteExistente.getFechaNacimiento());
-            }
-            if (pacienteNuevo.getEstadoPaciente() == null) {
-                pacienteNuevo.setEstadoPaciente(pacienteExistente.getEstadoPaciente());
-            }
-            if (pacienteNuevo.getEmail() == null) {
-                pacienteNuevo.setEmail(pacienteExistente.getEmail());
-            }
-            if (pacienteNuevo.getGenero() == null) {
-                pacienteNuevo.setGenero(pacienteExistente.getGenero());
-            }
-            if (pacienteNuevo.getTelefono() == null) {
-                pacienteNuevo.setTelefono(pacienteExistente.getTelefono());
-            }
-            
-            // Mantener la fecha de ingreso original
-            pacienteNuevo.setFechaIngreso(pacienteExistente.getFechaIngreso());
-            
-            // Mantener la lista de signos vitales
-            pacienteNuevo.setSignosVitales(pacienteExistente.getSignosVitales());
-            
-            return pacienteRepository.save(pacienteNuevo);
-        })
-        .orElseThrow(() -> new ResourceNotFoundException("No se encontró paciente con el ID: " + pacienteNuevo.getId()));
-}
+    public Paciente updatePaciente(PacienteUpdateDTO pacienteDTO) {
+        return pacienteRepository.findById(pacienteDTO.getId())
+                .map(pacienteExistente -> {
+                    // Usando @Builder.Default si quieres mantener valores por defecto
+                    Paciente pacienteActualizado = Paciente.builder()
+                            .id(pacienteExistente.getId())
+                            .nombre(pacienteDTO.getNombre() != null ? pacienteDTO.getNombre()
+                                    : pacienteExistente.getNombre())
+                            .apellido(pacienteDTO.getApellido() != null ? pacienteDTO.getApellido()
+                                    : pacienteExistente.getApellido())
+                            .rut(pacienteDTO.getRut() != null ? pacienteDTO.getRut() : pacienteExistente.getRut())
+                            .edad(pacienteDTO.getEdad() != null ? pacienteDTO.getEdad() : pacienteExistente.getEdad())
+                            .direccion(pacienteDTO.getDireccion() != null ? pacienteDTO.getDireccion()
+                                    : pacienteExistente.getDireccion())
+                            .fechaNacimiento(pacienteDTO.getFechaNacimiento() != null ? pacienteDTO.getFechaNacimiento()
+                                    : pacienteExistente.getFechaNacimiento())
+                            .estadoPaciente(pacienteDTO.getEstadoPaciente() != null ? pacienteDTO.getEstadoPaciente()
+                                    : pacienteExistente.getEstadoPaciente())
+                            .email(pacienteDTO.getEmail() != null ? pacienteDTO.getEmail()
+                                    : pacienteExistente.getEmail())
+                            .genero(pacienteDTO.getGenero() != null ? pacienteDTO.getGenero()
+                                    : pacienteExistente.getGenero())
+                            .telefono(pacienteDTO.getTelefono() != null ? pacienteDTO.getTelefono()
+                                    : pacienteExistente.getTelefono())
+                            .fechaIngreso(pacienteExistente.getFechaIngreso()) // Mantenemos la fecha original
+                            .signosVitales(pacienteExistente.getSignosVitales()) // Mantenemos los signos vitales
+                            .build();
+
+                    return pacienteRepository.save(pacienteActualizado);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No se encontró paciente con el ID: " + pacienteDTO.getId()));
+    }
 
 }
