@@ -1,9 +1,11 @@
 package com.cloudNativeBack.cloudNativeBack.controller;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.cloudNativeBack.cloudNativeBack.model.SignosVitales;
+import com.cloudNativeBack.cloudNativeBack.model.dto.SignosVitalesUpdateDTO;
 import com.cloudNativeBack.cloudNativeBack.service.SignosVitalesService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,13 +39,15 @@ public class SignosVitalesController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public ResponseEntity<SignosVitales> updateSignosVitales(@RequestBody SignosVitales signosVitales) {
-        return ResponseEntity.ok(signosVitalesService.updateSignosVitales(signosVitales));
+    @PutMapping("/{id}")
+    public ResponseEntity<SignosVitales> updateSignosVitales(
+            @PathVariable Long id,
+            @Valid @RequestBody SignosVitalesUpdateDTO dto) {
+        return ResponseEntity.ok(signosVitalesService.updateSignosVitales(id, dto));
     }
     @GetMapping("/paciente/{pacienteId}")
     public ResponseEntity<List<SignosVitales>> getSignosVitalesByPacienteId(@PathVariable Long pacienteId) {
         return ResponseEntity.ok(signosVitalesService.getSignosVitalesByPacienteId(pacienteId));
     }
-    
+
 }

@@ -34,38 +34,30 @@ public class PacienteService {
         pacienteRepository.deleteById(id);
     }
 
-    public Paciente updatePaciente(PacienteUpdateDTO pacienteDTO) {
-        return pacienteRepository.findById(pacienteDTO.getId())
+    public Paciente updatePaciente(Long id, PacienteUpdateDTO dto) {
+        return pacienteRepository.findById(id)
                 .map(pacienteExistente -> {
-                    // Usando @Builder.Default si quieres mantener valores por defecto
                     Paciente pacienteActualizado = Paciente.builder()
-                            .id(pacienteExistente.getId())
-                            .nombre(pacienteDTO.getNombre() != null ? pacienteDTO.getNombre()
-                                    : pacienteExistente.getNombre())
-                            .apellido(pacienteDTO.getApellido() != null ? pacienteDTO.getApellido()
-                                    : pacienteExistente.getApellido())
-                            .rut(pacienteDTO.getRut() != null ? pacienteDTO.getRut() : pacienteExistente.getRut())
-                            .edad(pacienteDTO.getEdad() != null ? pacienteDTO.getEdad() : pacienteExistente.getEdad())
-                            .direccion(pacienteDTO.getDireccion() != null ? pacienteDTO.getDireccion()
-                                    : pacienteExistente.getDireccion())
-                            .fechaNacimiento(pacienteDTO.getFechaNacimiento() != null ? pacienteDTO.getFechaNacimiento()
+                            .id(id) // Usamos el ID del path parameter
+                            .nombre(dto.getNombre() != null ? dto.getNombre() : pacienteExistente.getNombre())
+                            .apellido(dto.getApellido() != null ? dto.getApellido() : pacienteExistente.getApellido())
+                            .rut(dto.getRut() != null ? dto.getRut() : pacienteExistente.getRut())
+                            .edad(dto.getEdad() != null ? dto.getEdad() : pacienteExistente.getEdad())
+                            .direccion(
+                                    dto.getDireccion() != null ? dto.getDireccion() : pacienteExistente.getDireccion())
+                            .fechaNacimiento(dto.getFechaNacimiento() != null ? dto.getFechaNacimiento()
                                     : pacienteExistente.getFechaNacimiento())
-                            .estadoPaciente(pacienteDTO.getEstadoPaciente() != null ? pacienteDTO.getEstadoPaciente()
+                            .estadoPaciente(dto.getEstadoPaciente() != null ? dto.getEstadoPaciente()
                                     : pacienteExistente.getEstadoPaciente())
-                            .email(pacienteDTO.getEmail() != null ? pacienteDTO.getEmail()
-                                    : pacienteExistente.getEmail())
-                            .genero(pacienteDTO.getGenero() != null ? pacienteDTO.getGenero()
-                                    : pacienteExistente.getGenero())
-                            .telefono(pacienteDTO.getTelefono() != null ? pacienteDTO.getTelefono()
-                                    : pacienteExistente.getTelefono())
+                            .email(dto.getEmail() != null ? dto.getEmail() : pacienteExistente.getEmail())
+                            .genero(dto.getGenero() != null ? dto.getGenero() : pacienteExistente.getGenero())
+                            .telefono(dto.getTelefono() != null ? dto.getTelefono() : pacienteExistente.getTelefono())
                             .fechaIngreso(pacienteExistente.getFechaIngreso()) // Mantenemos la fecha original
                             .signosVitales(pacienteExistente.getSignosVitales()) // Mantenemos los signos vitales
                             .build();
 
                     return pacienteRepository.save(pacienteActualizado);
                 })
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "No se encontró paciente con el ID: " + pacienteDTO.getId()));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró paciente con el ID: " + id));
     }
-
 }

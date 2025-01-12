@@ -6,6 +6,8 @@ import com.cloudNativeBack.cloudNativeBack.model.Paciente;
 import com.cloudNativeBack.cloudNativeBack.model.dto.PacienteUpdateDTO;
 import com.cloudNativeBack.cloudNativeBack.service.PacienteService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +45,7 @@ public class PacienteController {
     @PutMapping("/{id}")
     public ResponseEntity<Paciente> actualizarPaciente(
             @PathVariable Long id,
-            @RequestBody PacienteUpdateDTO pacienteDTO) {
-        pacienteDTO.setId(id);
-        return ResponseEntity.ok(pacienteService.updatePaciente(pacienteDTO));
+            @Valid @RequestBody PacienteUpdateDTO dto) {
+        return ResponseEntity.ok(pacienteService.updatePaciente(id, dto));
     }
 }

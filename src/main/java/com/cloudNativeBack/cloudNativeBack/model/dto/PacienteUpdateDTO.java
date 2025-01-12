@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PacienteUpdateDTO {
-    private Long id;
     private String nombre;
     private String apellido;
     private String rut;
