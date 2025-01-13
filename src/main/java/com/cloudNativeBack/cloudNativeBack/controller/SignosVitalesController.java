@@ -46,7 +46,7 @@ public class SignosVitalesController {
         return ResponseEntity.ok(signosVitalesService.updateSignosVitales(id, dto));
     }
     @GetMapping("/paciente/{pacienteId}")
-    public ResponseEntity<List<SignosVitales>> getSignosVitalesByPacienteId(@PathVariable Long pacienteId) {
+    public ResponseEntity<SignosVitales> getSignosVitalesByPacienteId(@PathVariable Long pacienteId) {
         return ResponseEntity.ok(signosVitalesService.getSignosVitalesByPacienteId(pacienteId));
     }
 

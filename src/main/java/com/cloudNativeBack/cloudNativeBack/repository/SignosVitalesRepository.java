@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.cloudNativeBack.cloudNativeBack.model.SignosVitales;
 
 public interface SignosVitalesRepository extends JpaRepository<SignosVitales, Long> {
-    List<SignosVitales> findByPacienteId(Long pacienteId);
+    SignosVitales findByPacienteId(Long pacienteId);
   
 }
