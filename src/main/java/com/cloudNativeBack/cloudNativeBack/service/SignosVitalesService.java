@@ -65,7 +65,6 @@ public class SignosVitalesService {
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontraron signos vitales con el ID: " + id));
     }
-
     public SignosVitales getSignosVitalesByPacienteId(Long pacienteId) {
         return signosVitalesRepository.findByPacienteId(pacienteId);
     }

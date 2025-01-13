@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/back/pacientes")
 public class PacienteController {
 
@@ -28,7 +27,7 @@ public class PacienteController {
 
     @PostMapping
     public ResponseEntity<Paciente> savePaciente(@RequestBody Paciente paciente) {
-        return ResponseEntity.ok(pacienteService.savePaciente(paciente));
+        return ResponseEntity.ok(pacienteService.savePaciente(paciente));   
     }
 
     @GetMapping("/{id}")
